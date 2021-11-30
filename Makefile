@@ -13,7 +13,7 @@ install: build
 clean:
 	rm -rf build irinlithium.so
 
-libirinlithium.so: build/irinlithiumImage.o  build/irinlithiumString.o  build/irinlithiumVKB.o
+libirinlithium.so: build/image.o  build/string.o  build/VKB.o
 	$(CC) $(CFLAGS) $(SO_CFLAGS) $^ -o $@
 
 build/%.o: %.c

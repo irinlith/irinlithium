@@ -1,4 +1,4 @@
-#include "irinlithiumString.h"
+#include "string.h"
 
 void strconcat(char *dst, char *src, size_t n) {
 	char *src_it = src;

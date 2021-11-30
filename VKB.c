@@ -1,4 +1,4 @@
-#include "irinlithiumVKB.h"
+#include "VKB.h"
 
 #ifdef __unix__
 	#ifndef __wayland__

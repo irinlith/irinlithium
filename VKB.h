@@ -1,6 +1,6 @@
 #ifndef IRINLITHIUM_VKB_H
 #define IRINLITHIUM_VKB_H
-#include "irinlithiumString.h"
+#include "string.h"
 
 #define VKB_US_SHIFTMASK "~!@#$%^&*()_+{}|:\"<>?"
 

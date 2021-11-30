@@ -1,4 +1,4 @@
-#include "irinlithiumImage.h"
+#include "image.h"
 
 png_byte *pixelAt(bitmap_t *bitmap, png_uint_32 x, png_uint_32 y) {
 	if (!bitmap) return 0;
