@@ -1,6 +1,6 @@
 #include "tcp.h"
 
-static inline int bind_TCPSocket(int *hSocket, const int *clientPort) {
+static inline int bind_TCPSocket(int *hSocket, const unsigned short *clientPort) {
 	struct sockaddr_in remote = {0};
 	remote.sin_family = AF_INET;
 	remote.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -8,7 +8,7 @@ static inline int bind_TCPSocket(int *hSocket, const int *clientPort) {
 	return bind(*hSocket, (struct sockaddr *) &remote, sizeof(remote));
 }
 
-int connect_TCPClient(int *hSocket, const char *address, const int *serverPort) {
+int connect_TCPClient(int *hSocket, const char *address, const unsigned short *serverPort) {
 	struct sockaddr_in remote = {0};
 	remote.sin_addr.s_addr = inet_addr(address);
 	remote.sin_family = AF_INET;
@@ -34,7 +34,7 @@ int receive_TCPClient(int *hSocket, char *receive, short receive_size) {
 	return recv(*hSocket, receive, receive_size, 0);
 }
 
-int bind_TCPServer(int *hSocket, const int max_connections, const int serverPort) {
+int bind_TCPServer(int *hSocket, const int max_connections, const unsigned short serverPort) {
 	if ((*hSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		return -1;
 	if (bind_TCPSocket(hSocket, &serverPort) < 0)
