@@ -161,6 +161,27 @@ void flipPixels(bitmap_t *bitmap) {
 	}
 }
 
+bool findInImage(bitmap_t *target, bitmap_t *source) {
+	if (!target || !source) return false;
+	if (source->height > target->height || source->width > target->width) return false;
+	for (png_uint_32 y = 0; y <= target->height - source->height; y++)
+		for (png_uint_32 x = 0; x <= target->width - source->width; x++) {
+			png_uint_32 sx = 0, sy = 0;
+			png_byte *px = pixelAt(target, x, y), *spx = pixelAt(source, sx, sy);
+			while (px[0] == spx[0] && px[1] == spx[1] && px[2] == spx[2] && px[3] == spx[3]) {
+				if (sy == source->height - 1 && sx == source->width - 1) return true;
+				sx++;
+				if (sx == source->width) {
+					sx = 0;
+					sy++;
+				}
+				spx = pixelAt(source, sx, sy);
+				px = pixelAt(target, x + sx, y + sy);
+			}
+		}
+	return false;
+}
+
 //Work-In-Progress
 void resizeImage(bitmap_t *bitmap, png_uint_32 width, png_uint_32 height) {
 	if (!bitmap) return;
