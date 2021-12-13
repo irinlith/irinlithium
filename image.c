@@ -161,7 +161,7 @@ void flipPixels(bitmap_t *bitmap) {
 	}
 }
 
-bool findInImage(bitmap_t *target, bitmap_t *source) {
+bool findInImage(bitmap_t *target, bitmap_t *source, png_uint_32 *fstartX, png_uint_32 *fstartY) {
 	if (!target || !source) return false;
 	if (source->height > target->height || source->width > target->width) return false;
 	for (png_uint_32 y = 0; y <= target->height - source->height; y++)
@@ -169,9 +169,12 @@ bool findInImage(bitmap_t *target, bitmap_t *source) {
 			png_uint_32 sx = 0, sy = 0;
 			png_byte *px = pixelAt(target, x, y), *spx = pixelAt(source, sx, sy);
 			while (px[0] == spx[0] && px[1] == spx[1] && px[2] == spx[2] && px[3] == spx[3]) {
-				if (sy == source->height - 1 && sx == source->width - 1) return true;
-				sx++;
-				if (sx == source->width) {
+				if (sy == source->height - 1 && sx == source->width - 1) {
+					if (fstartX) *fstartX = x;
+					if (fstartY) *fstartY = y;
+					return true;
+				}
+				if (++sx == source->width) {
 					sx = 0;
 					sy++;
 				}
@@ -180,6 +183,23 @@ bool findInImage(bitmap_t *target, bitmap_t *source) {
 			}
 		}
 	return false;
+}
+
+void findReplaceInImage(bitmap_t *target, bitmap_t *source, bitmap_t *replacement, bitmap_t *destination) {
+	if (!target || !source || !replacement || !destination) return;
+	if (source->height > target->height || source->width > target->width || destination->height < target->height || destination->width < target->height) return;
+	png_uint_32 tx = 0, ty = 0;
+	if (findInImage(target, source, &tx, &ty)) {
+		layerImage(destination, target, 0, 0);
+		for (png_uint_32 y = 0; y < source->height; y++)
+			for (png_uint_32 x = 0; x < source->width; x++) {
+				png_byte *px = pixelAt(destination, tx + x, ty + y), *rpx = pixelAt(replacement, x, y);
+				px[0] = rpx[0];
+				px[1] = rpx[1];
+				px[2] = rpx[2];
+				px[3] = rpx[3];
+			}
+	}
 }
 
 //Work-In-Progress

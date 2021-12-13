@@ -22,6 +22,7 @@ void destroyBitmap(bitmap_t *bitmap);
 void layerImage(bitmap_t *base, bitmap_t *overlay, png_uint_32 start_x, png_uint_32 start_y);
 void flipPixels(bitmap_t *bitmap);
 bitmap_t createBitmap(png_uint_32 width, png_uint_32 height, int color_type, int bit_depth);
-bool findInImage(bitmap_t *target, bitmap_t *source);
+bool findInImage(bitmap_t *target, bitmap_t *source, png_uint_32 *fstartX, png_uint_32 *fstartY);
+void findReplaceInImage(bitmap_t *target, bitmap_t *source, bitmap_t *replacement, bitmap_t *destination);
 
 #endif
